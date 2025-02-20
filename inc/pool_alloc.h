@@ -88,7 +88,7 @@ typedef struct {
 
 PA_DEF bool pa_init(pool_alloc_t* pool, size_t sizeof_type,
                     void* buffer, size_t buffer_size);
-PA_DEF size_t pa_free_count(pool_alloc_t* pool);
+PA_DEF size_t pa_free_chunk_count(pool_alloc_t* pool);
 PA_DEF void* pa_alloc(pool_alloc_t* pool);
 PA_DEF void pa_free(pool_alloc_t* pool, void* ptr);
 PA_DEF void pa_free_all(pool_alloc_t* pool);

@@ -4,7 +4,7 @@
 void pool_info(pool_alloc_t* pool, size_t count) {
     char info[64] = {0};
     sprintf(info, "Chunk size/free count: %zu/%zu",
-        pool->chunk_size, pa_free_count(pool));
+        pool->chunk_size, pa_free_chunk_count(pool));
 
 #define DASHES "--------------------------------------------------"
 
@@ -21,9 +21,9 @@ void pool_info(pool_alloc_t* pool, size_t count) {
     printf("+-"DASHES"-+\n");
 }
 
+#define FIRST_N_CHUNKS 4
 #define BUFFER_MAX 65536
 char buffer[BUFFER_MAX];
-#define FIRST_N_CHUNKS 4
 
 int main(void) {
     pool_alloc_t pool = {0};
@@ -32,9 +32,8 @@ int main(void) {
 
     pool_info(&pool, FIRST_N_CHUNKS);
 
-    int* a = (int*)pa_alloc(&pool);
-    int* b = (int*)pa_alloc(&pool);
-    *a = 69; *b = 420;
+    int* a = (int*)pa_alloc(&pool); *a =  69;
+    int* b = (int*)pa_alloc(&pool); *b = 420;
     printf("First  alloc: %d\n", *a);
     printf("Second alloc: %d\n", *b);
 

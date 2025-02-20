@@ -1,6 +1,6 @@
 #include "pool_alloc.h"
 
-size_t pa_free_count(pool_alloc_t* pool) {
+size_t pa_free_chunk_count(pool_alloc_t* pool) {
     size_t count = 0;
     void* current_chunk = pool->head;
     while (current_chunk) {
@@ -47,10 +47,11 @@ void pa_free(pool_alloc_t* pool, void* ptr) {
 
 void pa_free_all(pool_alloc_t* pool) {
     char* chunk = (char*)pool->chunks;
-    for (size_t i = 0; i < pool->chunk_count - 1; i++) {
+    for (size_t i = 0; pool->chunk_count > 0 && i < pool->chunk_count - 1; i++) {
         char* next_chunk = chunk + pool->chunk_size;
         *(void**)chunk = next_chunk;
         chunk = next_chunk;
     }
-    *(void**)chunk = NULL;
+    if (pool->chunk_count)
+        *(void**)chunk = NULL;
 }
